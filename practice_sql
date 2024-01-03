@@ -1,3 +1,5 @@
+COST OF PITCHERS
+
 SELECT
   salaries.yearid AS "Year",
   people.namegiven AS "Player Name",
@@ -20,11 +22,16 @@ INNER JOIN people
 MOST HOME RUNS BY YEAR
 
 SELECT
-	batting.yearid AS "Year",
-	people.namegiven AS "Player Name",
-	batting.hr AS "Home Runs"
+    batting.yearid AS "Year",
+    people.namegiven AS "Player Name",
+    batting.hr AS "Home Runs"
 FROM batting
+INNER JOIN (
+    SELECT yearid, MAX(batting.hr) AS max_hr
+    FROM batting
+    GROUP BY yearid
+) AS max_hr_per_year
+ON batting.yearid = max_hr_per_year.yearid AND batting.hr = max_hr_per_year.max_hr
 INNER JOIN people
-	ON batting.playerid = people.playerid
-GROUP BY 1, 2, 3
-ORDER BY 1 DESC, 3 DESC
+ON batting.playerid = people.playerid
+ORDER BY 1 DESC, 3 DESC;
