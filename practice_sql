@@ -1,0 +1,15 @@
+SELECT
+	salaries.yearid AS "Year",
+  people.namegiven AS "Player Name",
+  ROUND(salaries.salary / pitching.g) AS "Cost per Game",
+  pitching.gs AS "Games Started"
+FROM salaries
+INNER JOIN pitching
+	ON salaries.playerid = pitching.playerid
+  AND salaries.yearid = pitching.yearid
+  AND salaries.teamid = pitching.teamid
+INNER JOIN people
+	ON salaries.playerid = people.playerid
+ WHERE pitching.gs >= 10
+ GROUP BY 1, 2, 3, 4
+ ORDER BY 1 DESC, 3 DESC
